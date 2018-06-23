@@ -66,6 +66,10 @@
 
         const {objArray} = require('./models');
 
+6.  Module exports router  - this goes at END of file
+
+        module.exports = router;
+
 **THINGS TO NOTE**
     
 - When calling **GET, POST, PATCH, PUT, and DELETE** call **router.get, router.post, etc.**  No longer call app.get, etc in this setup.
@@ -279,7 +283,7 @@ const jsonParser = bodyParser.json();
 
 ```
 //create post function to listen at named endpoint
-    //identify endpoint, call jsonParser before req, res args
+    //identify endpoint, call jsonParser before req, res args **If using routing may only need to specify '/'**
 app.post('/endpoint', jsonParser, (req, res) =>  {
 
     //create const for array of required POST fields
@@ -302,7 +306,7 @@ app.post('/endpoint', jsonParser, (req, res) =>  {
     }
 
       else {
-        //if field in response 
+        //if field in request 
         //create const to create item with the request name and ingredient in request by passing it to endpoint.create
         const item = endpoint.create(req.body.name, req.body.ingredients);
 
@@ -365,7 +369,7 @@ const jsonParser = bodyParser.json();
     //loop through json object keys presented in request the length of requiredFields
     for (let i=0; i < requiredFields; i++)  {
 
-    //create const to check for field existing using IF statement at current array position i
+    //create const of field of requiredFields[i] to be used to check field at array[i] exists in IF statement
         const field = requiredFields[i];
 
     //if not field in request body
@@ -389,7 +393,7 @@ const jsonParser = bodyParser.json();
         //when ID matches log message of update to request param ID
             console.log('${req.params.id} has been updated.`);
         
-        //call update operation with object request param id and request body name/ingredients 
+    //call update operation with object of request param id and request body object key/values
             operation.update({
                 id: req.params.id,
                 name: req.body.name,
@@ -405,6 +409,48 @@ const jsonParser = bodyParser.json();
 
 # Example Comments for Practice
 -------------------------------------------
+
+## Setup
+
+
+//Create a constant to import(require) Express
+
+//Create a constant to import/require Morgan for logging
+
+//Create constant that creates a new app instance by calling top level Express function
+
+//**When using Express Routing-** Create const values to import/require module JS files (moduleOneRouter.js & moduleTwoRouter.js - the .js is not used to setup the params)
+
+//Tell app to use morgan for common http logging
+
+//Tell app to use express static location of public for static assets
+
+//**When using Express Routing-** Tell app to use specific endpoints for the appropriate /moduleOne and /moduleTwo routers
+
+//Listen for requests and log when server started
+/*
+    app.listen(process.env.PORT || 8080, () => {
+        console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
+    });
+*/
+
+**Route file setups**
+
+//Create a constant to import(require) Express
+
+//const express = require('express');
+
+//Create a constant named router to call Express Router
+
+//Create const of bodyParser and require body-parser to parse POST/PUT values
+
+//Create const to call bodyParser and parse json requests
+
+//Create const object of imported/required object array in models file
+
+//module exports router - this goes at END of file
+
+
 
 ## GET
 
@@ -488,7 +534,7 @@ OR
 
 
 //create post function to listen at named endpoint
-    //identify endpoint, call jsonParser before req, res args
+    //identify endpoint, call jsonParser before req, res args  **If using routing may only need to specify '/'**
 
 //create const for array of required POST fields
 
@@ -502,7 +548,7 @@ OR
       
 //respond with 400 status and send error message in json response
 
-//if field in response 
+//if field in request 
     //create const to create item with the request name and ingredient in request by passing it to endpoint.create
 
 //respond with status 200 and json object item
@@ -546,7 +592,7 @@ Like POST will need to parse data sent by client and validate that required fiel
 
 //loop through json object keys presented in request the length of requiredFields
 
-//create const to check for field existing using IF statement at current array position i
+//create const of field of requiredFields[i] to be used to check field at array[i] exists in IF statement
 
 //if not field in request body
 
@@ -559,7 +605,8 @@ Like POST will need to parse data sent by client and validate that required fiel
 
 //when ID matches log message of update to request param ID
         
-//call update operation with object request param id and request body name/ingredients 
+//call update operation with object of request param id and request body object key/values
+
              
 //respond with status 204 and end
 
