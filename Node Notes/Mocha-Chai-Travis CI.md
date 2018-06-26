@@ -1,4 +1,5 @@
 # Install and Setup Mocha/Chai
+------------------------------------------------
 
 1.  Create npm project.
 
