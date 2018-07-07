@@ -215,7 +215,7 @@
                 res.status(500).json({message: 'Internal server error'})
             });
         });
-
+        ~~~
 
 ### Find by value
 
@@ -423,7 +423,52 @@
 *   CRUD operations: We use Mongoose's built-in model methods like `.create(), .find, .findById, findByIdAndUpdate, and findByIdAndRemove` to interact with the database layer.
 
 *   Retrieving vs. presenting data: Just because our data looks one way in the database doesn't mean that our API needs to pass along the raw data. If you want to have a standard way of representing your documents in your API, adding a serialize() instance method can be a good way to achieve that (note that there's nothing magical about the name serialize, we just chose that name because it describes how the object needs to be turned into a JSON string when sent via our REST API).
-  
+
+
+ 
+#Deploy to Heroku, mLab and Travis CI
+
+## mLab - Mongo DB
+
+*   Create DB on mLab
+
+*   Create DB User for new DB and gather connection info required for Heroku or accessing from your PC
+~~~ js
+//Seed/Import data into local DB
+mongoimport --db <dbName> --collection <collectionName> --drop --file ../seed-data.json
+
+//Connect to mlab DB
+mongo ds123456.mlab.com:29621/<dbName> -u <dbuser> -p <dbpassword>
+
+//Seed/Import data into mlab DB
+mongoimport -h ds123456.mlab.com:29621 -d <dbName> -c <collectionName> -u <dbuser> -p <dbpassword> --file seed-data.json
+
+//Heroku config for DB
+mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
+~~~
+
+## Heroku
+
+1.  Go to project directory and run `heroku create` and document the name of your app presented when complete.
+
+2.  Run `git push heroku master`.
+
+3.  Run `heroku ps:scale web=1` to start up a free web dyno on the server.
+
+4.  Navigate to [Heroku](https://id.heroku.com/login)
+
+5.  Once on your dashboard locate the app name documented in `Step 1` and open it.  Then access `Setting`.
+
+6.  Click `Reveal Config Vars`, ADD `KEY = DATABASE_URL` and `VALUE = mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>`
+
+7.  Click `Open app`, app can now receive CRUD requests from Postman
+
+
+## Travis CI
+
+~~~
+To add
+~~~ 
 
 
 
