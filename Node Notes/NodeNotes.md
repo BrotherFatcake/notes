@@ -22,7 +22,7 @@
         const moduleOneRouter = require('./moduleOneRouter');
         const moduleTwoRouter = require('./moduleTwoRouter');
 
-5.  User Morgan for logging http layer
+5.  Use Morgan for logging http layer
 
         app.use(morgan('common'));
 
@@ -167,9 +167,9 @@ Call the endpoint with id of object to update:
 
 `res.json` converts JavaScript objects to JSON and appropriately sets the Content-Type header to application/json; charset=utf-8 . By default, we'll get a 200 HTTP status code.
 
-```
+~~~ js
 app.get('/', (req, res) => res.json({foo: 'bar'}));
-```
+~~~
 
 What this does-
 
@@ -187,7 +187,7 @@ app[our previous const]
 
 ### Path variable examples**
 
-```
+~~~ js
 // this would normally be stored in DB
 
 const exampleData = [
@@ -207,18 +207,18 @@ const exampleData = [
     grade: 'B',
   }
 ];
-```
+~~~
 
-```
+~~~ js
 //GET request that returns all array items as json object
 
 app.get('/endpoint', (req, res) => {
   res.status(200).json(exampleData)
 })
 
-```
+~~~
 
-```
+~~~ js
 // GET request to 'url.com/endpoint/123456789' to retrieve specific item at endpoint + :id
 app.get('/endpoint/:id', (req, res)  =>  {
 
@@ -243,12 +243,12 @@ app.get('/endpoint/:id', (req, res)  =>  {
 
 });
 
-```
+~~~
 
 
 
 ### Conditional logic and status example**
-```
+~~~ js
 // this is stubbed. random-ishly returns true or false
 const canAccessEndpoint = (req) => Boolean(Math.floor(Math.random() * 2));
 
@@ -265,7 +265,7 @@ app.get('/', (req, res) => {
   }
 });
 
-```
+~~~
 
 
 
@@ -281,7 +281,7 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
 
-```
+~~~ js
 //create post function to listen at named endpoint
     //identify endpoint, call jsonParser before req, res args **If using routing may only need to specify '/'**
 app.post('/endpoint', jsonParser, (req, res) =>  {
@@ -315,20 +315,20 @@ app.post('/endpoint', jsonParser, (req, res) =>  {
 
       };
   };
-```
+~~~
 
 
 ## DELETE
 
 Like GET and POST, DELETE will call similar endpoint but in example calling path variable for id of item to be deleted
 
-```
+~~~ js
     localhost:8080/endpoint/:id
-```
+~~~
 
 Will provide the id to endpoint.delete();
 
-```
+~~~ js
 //create delete function to listen at named endpoint + :id
 app.delete('/endpoint/:id', (req, res)  =>  {
     
@@ -341,7 +341,7 @@ app.delete('/endpoint/:id', (req, res)  =>  {
     //respond with 200 status and end
     res.status(200).end();
 });
-```
+~~~
 
 ## PUT (update)
 
@@ -358,7 +358,7 @@ const bodyParser = require('body-parser');
 //create const to use call bodyParser and parse incoming json requests
 const jsonParser = bodyParser.json();
 
-```
+~~~ js
 //create put function to listen at named endpoint + :id
         //identify endpoint, call jsonParser before req, res args
     app.put('/endpoint/:id', jasonParser,  (req, res)  =>  {
@@ -405,7 +405,7 @@ const jsonParser = bodyParser.json();
 
 });
 
- ```   
+ ~~~   
 
 # Example Comments for Practice
 -------------------------------------------
@@ -458,9 +458,9 @@ const jsonParser = bodyParser.json();
 
 `res.json` converts JavaScript objects to JSON and appropriately sets the Content-Type header to application/json; charset=utf-8 . By default, we'll get a 200 HTTP status code.
 
-```
+~~~ js
 app.get('/', (req, res) => res.json({foo: 'bar'}));
-```
+~~~
 
 What this does-
 
@@ -479,7 +479,7 @@ app[our previous const]
 ### Path variable examples**
 
 **Example Data**
-```
+~~~ js
 // this would normally be stored in DB
 
 const exampleData = [
@@ -499,7 +499,7 @@ const exampleData = [
     grade: 'B',
   }
 ];
-```
+~~~
 
 
 ## GET
