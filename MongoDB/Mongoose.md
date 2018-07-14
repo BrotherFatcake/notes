@@ -483,19 +483,19 @@ To add
 //Use strict
 "use strict";
 
-//Create a constant to import(require) Express
+//Create a constant to import(require) express
 
-//Create a constant to import(require) Mongoose
+//Create a constant to import(require) mongoose
 
-//Create a constant to import/require Morgan for logging
+//Create a constant to import/require morgan for logging
 
 //mongoose Promise to use global ES6 Promises
 
 //Create const of PORT, DATABASE_URL to import(require) config.js
 
-//Create const of {model} to import(require) models.js
+//Create const of {model} to import(require) models.js.  {model} = model name defined in models.js
 
-//Create constant that creates a new app instance by calling top level Express function
+//Create constant that creates a new app instance by calling top level express function
 
 //tell app to use express.json
 
@@ -521,54 +521,53 @@ To add
 //Server Start
 //declare empty `server` variable - this is needed for stopServer
 
+//function named startServer takes args databaseUrl and port = PORT
 
-//function named startServer takes args `databaseUrl` and `port = PORT`
+//return a new promise with args resolve and reject =>
 
-//return a new promise with args `resolve` and `reject =>`
+    //tell mongoose to connect with args databaseUrl and err =>
 
-//tell mongoose to connect with args `databaseUrl` and `err =>`
+        //if err return reject err
 
-//if err return reject err
+            //assign `server` = app listen with args port and () =>
 
-//assign `server` = tell app to listen with args `port` and `() =>`
+            //log to console the app is listening to port ${port}
 
-//log to console the app is listening to port `${port}`
-
-//resolve for outstanding promise
+            //resolve for outstanding promise
 
 
-//on args `error` and `err =>`
+        //chain on args `error` and err =>
 
-//mongoose disconnect
+        //mongoose disconnect
 
-//reject with err for outstanding promise
+        //reject with arg err for outstanding promise
 
 
 //Server Stop
 
 //function named stopServer has no args
 
-//return mongoose disconnect with no args then `=>`
+    //return mongoose disconnect with no args then with no args =>
 
-//return a new promise with args `resolve` and `reject =>`
+    //return a new promise with args resolve and reject =>
 
-//log to console the server is being stopped
+    //log to console the server is being stopped
 
-//tell `server` to close with arg `err =>`
+    //tell server to close with arg err =>
 
-//if err return reject with err for outstanding promise
+        //if err return reject with err for outstanding promise
 
-//resolve for outstanding promise
+        //resolve for outstanding promise
 
 
 
 //Code to allow server to be called directly or via tests
 //if require main is strictly equal to module
 
-//runServer with arg `DATABASE_URL` and `catch err =>` log `error err` to console 
+//runServer with arg DATABASE_URL, catch with arg err => error to console with arg err to console not a message 
 
 
-//export the modules created add, runServer and closeServer
+//export the modules created app, runServer and closeServer
 
 ~~~
 
@@ -581,6 +580,8 @@ To add
 "use strict";
 
 //exports DATABASE_URL equals process env DATABASE_URL || "mongodb://databaseURL/dbName...";
+    //For dev environment may need to swap positions - 'mongodb://databaseURL/dbName...' || process env DATABASE_URL
+
 
 //exports TEST_DATABASE_URL equals process env TEST_DATABASE_URL || "mongodb://databaseURL/test_dbName...";
 
@@ -596,29 +597,29 @@ To add
 //Use strict
 "use strict";
 
-//Create a constant to import(require) Mongoose
+//Create a constant to import(require) mongoose
 
-//Create const for SCHEMA
-//schemaName is mongoose Schema ({schemaObject})
+//Create const for the schemaName equals mongoose Schema ({schemaObject})
 
-//Within schemaObject specify fieldName: {type: <type>, required: true/false/'do not include'}
-//Example: fieldName: {type: String, required: true}, fieldName2: {type: String}
+    //Within schemaObject specify fieldName: {type: <type>, required: true/false/'do not include'}
+        //Example: fieldName: {type: String, required: true}, fieldName2: {type: String}, include nested fields
 
-//Create **VIRTUALS** to return more human readable sub-values
-//Example personName may have sub-values of first and last
-//schemaName virtual with arg 'virtualName' get function with no args
+//Create **VIRTUAL** to return more human readable sub-values
+    //Example personName may have sub-values of first and last
+    //schemaName virtual with arg 'virtualName' get function with no args
 
-//return this.personName.first this.personName.last trim with no args
+    //return template literal placeholders this.personName.first and this.personName.last, trim with no args
 
-//Create cleanUp function to specif what should be returned via the API
-//schemaName methods methodName is function with no args
+//Create cleanUp function to specify what should be returned via the API
+//schemaName methods methodName equal function with no args
 
-//return {object}
-//Within object {key1: this.val1, key2: this.val2, key3: this.virtualName}
+    //return {object}
+    //Within object {key1: this.val1, key2: this.val2, key3: this.virtualName}
+
 
 //Create const modelName is mongoose model with args '<DB collectionName>' and schemaName
 
-//export module modelName
+//module exports equal {modelName}
 
 ~~~
 
@@ -630,15 +631,15 @@ To add
 "use strict";
 
 **Only needed if using Express Routing**
-//Create a constant to import(require) Express
+//Create a constant to import(require) express
 
-//Create a constant to import(require) express Router
+//Create a constant of router equal express router with no args
 
 //Create const of {model} to import(require) models.js
 
 
 //At bottom of file
-//export module of router;
+//module exports the const router
 
 **End Express Routing specific**
 
@@ -651,38 +652,38 @@ To add
 
 //call router or app get from '/' with args request response =>
 
-//modelName find with no args
+    //modelName find with no args
 
-//then with arg '<DB collectionName>' =>
+        //then with arg '<DB collectionName>' =>
 
-//respond with json object key/val pair, val is map of <DB collectionName>
+            //respond with json object key/val pair, key is <DB collectionName> and val is <DB collectionName> map
 
-//New map (arrayName) => send arrayName through cleanUp method 
+                //New map (arrayName) => (arrayName) through cleanUp method with no args 
 
-//ERROR CATCHER
-//catch err =>
+    //ERROR CATCHER
+    //catch err =>
 
-//log error err to console
+        //log error err to console
 
-//respond status 500 with json message stating error ocurred
+        //respond status 500 and json object message stating error ocurred
 
 
 //GET by ID
 
 //call router or app get from '/:id' with args request response =>
 
-//modelName findById with args request params id
+    //modelName findById with args request params id
 
-//then dataName => respond with json with arg of 'send dataName through cleanUp method
-    //where data name (ex. student or 'blog post') is the object being returned
+    //then dataName => respond json non-object with arg of dataName cleanUp method
+        //where data name (ex. student or post or data) is the object being returned
 
 
-//ERROR CATCHER
-//catch err =>
+    //ERROR CATCHER
+    //catch err =>
 
-//log error err to console
+        //log error err to console
 
-//respond status 500 with json message stating error ocurred
+        //respond status 500 with json message stating error ocurred
 
 
 //POST
@@ -695,20 +696,20 @@ To add
 
 //loop through requiredFields
 
-//create const field to assign requiredField position i during loop
+        //create const field and assign requiredField position i during loop
 
 
-//IF field is not in the request body
+    //IF field is not in the request body
 
-//create const for error message naming missing field from body
+        //create const for error message naming missing field from body
 
-//log the error to console with arg errMessage
+        //log the error to console with arg errMessage
 
-//return response status 400 and send errMessage
+        //return response status 400 and send errMessage
 
 
 //CREATE NEW DB OBJECT
-//modelName create {object}
+    //modelName create {object} that contains the key req body pair values
 
     //Within object {key1: req.body.val1, ley2: req.body.val2}
     //If key/val has sub-key/val they do not need to be specified here it would be specified 
@@ -716,69 +717,69 @@ To add
 
 
 //then dataName => respond status 201 and json dataName send through cleanUp
-    //where data name (ex. student or 'post') is the object being returned
+    //where data name (ex. student or post or data) is the object being returned
 
 
 //ERROR CATCHER
-//catch err =>
+    //catch err =>
 
-//log error err to console
+    //log error err to console
 
-//respond status 500 with json message stating error ocurred
+    //respond status 500 with json message stating error ocurred
 
 
 //PUT
 
 //call router or app put from '/:id' with args request response =>
 
-//IF NOT request params id AND request body id AND request params id strict equal request body id 
+    //IF NOT request params id AND request body id AND request params id strict equal request body id 
 
-//create const for error message stating request params id AND request body id must match
+        //create const for error message stating request params id AND request body id must match
 
-//log the error to console with arg errMessage
+        //log the error to console with arg errMessage
 
-//return response status 400 and send errMessage
+            //return response status 400 and send errMessage
 
-//create const of empty object for fields to update
+    //create const of empty object for fields to update
 
-//create const array of fields that are allowed to be updated
+    //create const array of fields that are allowed to be updated
 
-//for each canUpdate with arg dataArg =>
+    //for each canUpdate with arg dataArg =>
 
-//if dataArg is in request body
+        //if dataArg is in request body
 
-//assign the request body[dataArg] to makeUpdate[dataArg] object
+            //assign the request body[dataArg] to toUpdate[dataArg] object
 
 
-//modelName call findByAndUpdate with args request params id and object with $set/val pair where val is makeUpdate
+        //modelName call findByAndUpdate with args request params id and object with $set/val pair where val is makeUpdate
 
-//then dataName => respond with json message naming id has been updated, status 204, and end
-    //where data name (ex. student or 'post') is the object being returned
+        //then dataName => respond with json message naming request body id has been updated, status 204, and end with no args
+            //where data name (ex. student or post or data) is the object being returned
 
 
 //ERROR CATCHER
 //catch err =>
 
-//log error err to console
+    //log error err to console
 
-//respond status 500 with json message stating error ocurred
+    //respond status 500 with json message stating error ocurred
 
 
 //DELETE
 
 //call router or app delete from '/:id' with args request response =>
 
-//modelName findByIdAndRemove with arg request params id
+    //modelName findByIdAndRemove with arg request params id
 
-//then dataName => respond with json message naming id has been removed, status 204, and end
-    //where data name (ex. student or 'post') is the object being returned
+    //then dataName => respond with json message naming request params id has been removed, status 204, and end with no args
+        //where data name (ex. student or post or data) is the object being returned
 
 
 //ERROR CATCHER
-//catch err =>
+    //catch err =>
 
-//log error err to console
+    //log error err to console
 
-//respond status 500 with json message stating error ocurred
+    //respond status 500 with json message stating error ocurred
 ~~~
 
