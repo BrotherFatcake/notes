@@ -3,7 +3,7 @@
 
 ## server.js setup
 
-1.  Create a constant to import(require) Express
+1.  Create a constant to require Express
     
         const express = require('express');
 
@@ -46,7 +46,7 @@
 
 ## Route file setups
 
-1.  Create a constant to import(require) Express
+1.  Create a constant to require Express
     
         const express = require('express');
 
@@ -413,7 +413,7 @@ const jsonParser = bodyParser.json();
 ## Setup
 
 
-//Create a constant to import(require) Express
+//Create a constant to require Express
 
 //Create a constant to import/require Morgan for logging
 
@@ -436,7 +436,7 @@ const jsonParser = bodyParser.json();
 
 **Route file setups**
 
-//Create a constant to import(require) Express
+//Create a constant to require Express
 
 //const express = require('express');
 

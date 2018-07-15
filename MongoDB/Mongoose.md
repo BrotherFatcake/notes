@@ -483,17 +483,17 @@ To add
 //Use strict
 "use strict";
 
-//Create a constant to import(require) express
+//Create a constant to require express
 
-//Create a constant to import(require) mongoose
+//Create a constant to require mongoose
 
-//Create a constant to import/require morgan for logging
+//Create a constant to require morgan for logging
 
 //mongoose Promise to use global ES6 Promises
 
-//Create const of PORT, DATABASE_URL to import(require) config.js
+//Create const of PORT, DATABASE_URL to require config.js
 
-//Create const of {model} to import(require) models.js.  {model} = model name defined in models.js
+//Create const of {model} to require models.js.  {model} = model name defined in models.js
 
 //Create constant that creates a new app instance by calling top level express function
 
@@ -503,7 +503,7 @@ To add
 
 **If using Express Routing by putting CRUD code in separate JS file**
 
-//Create const for new `constNameRoute` (can name it anything) to import(require) routeFile.js (can name it anything)
+//Create const for new `constNameRoute` (can name it anything) to require routeFile.js (can name it anything)
 
 //tell app to use args of '/endPointName' and const specified for 'constNameRoute'
 
@@ -597,7 +597,7 @@ To add
 //Use strict
 "use strict";
 
-//Create a constant to import(require) mongoose
+//Create a constant to require mongoose
 
 //Create const for the schemaName equals mongoose Schema ({schemaObject})
 
@@ -624,6 +624,323 @@ To add
 ~~~
 
 
+## Setup test file
+
+~~~ js
+//use strict
+'use strict';
+
+//create const to require chai
+
+//create const to require chai-http
+
+
+//create const to require faker
+
+//create const to require mongoose
+
+//create const expect to assert chai expect
+
+//Create const of {model} to require models.js.  {model} = model name defined in models.js
+
+//create const of object app, runServer, closeServer to require server.js
+
+//Create const of TEST_DATABASE_URL to require config.js
+
+//tell chai to use chaiHttp
+
+
+//SEED TEST DATA
+
+//create seed data function with no args
+
+//log info with message to console that data is seeding
+
+//create const of empty array for seed data
+
+//loop through x number of times and push seed data with arg of generate data function with no args
+
+//return model and insertMany with arg of seed data
+
+
+//create generate data function with no args
+
+// return {object}
+	//{object} contains fields needed to create DB test data
+	// {key1: faker.dataSet.dataType(), key2: generateDataFunction2(), key3: {key3a: faker.dataSet.dataType(), key3b: generateDataFunction3()}, key4: [array of faker or function calls]}
+
+
+
+//**ADDITIONAL OPTIONAL FUNCTIONS USED TO CREATE DATA FAKER ISN'T ABLE TO PRODUCE - ADD AS NEEDED**
+
+//create generate data function2 with no args
+
+//create const of <DB fieldName> array ['data1','data2','data3']
+
+//return <DB fieldName> as array position of 'x'
+	//'x' = Math floor of Math random * <DB fieldName> array length
+	//can also return object containing value of above and generated faker data
+	// {key5: faker.dataSet.dataType(), key6: <DB fieldName> array const
+
+//**END OPTIONAL AS NEEDED FUNCTIONS
+
+
+
+//DB TEAR DOWN and BEFORE/AFTER FUNCTIONS
+
+//create tear down function with no args
+
+//warn to console that DB is being deleted
+
+//return mongoose connection dropDatabase with no args
+
+
+//describe with args of 'description' and function with no args 
+
+//BEFORE - RUNS ONCE TO START SERVER
+//before with arg of function with no args
+
+//return runServer with arg of test DB url
+
+
+//BEFOREEACH - RUNS WITH EACH TEST TO SEED DATA
+//beforeEach with arg of function with no args
+
+//return seed data function with no args
+
+
+//AFTEREACH - RUNS AT THE END OF EACH TEST TO CLEAR THE DB
+//afterEach with arg of function with no args
+
+//return tear down function with no args
+
+//AFTER - RUNS ONCE TO CLOSE SERVER WHEN TESTING IS COMPLETE
+//after with arg of function with no args
+
+//return closeServer with arg of test DB url
+		
+
+//**TESTS**
+
+
+
+//GET TESTS
+
+//describe with args of 'description of test block' and function with no args
+
+
+
+//Test 1
+      // strategy:
+      //    1. get back all objects returned by by GET request to `/endpoint`
+      //    2. prove res has right status, data type
+      //    3. prove the number of objects we got back is equal to number
+      //       in db.
+
+
+//it with args 'description of test' and function with no args
+
+//create 1stEmpty variable to save future response value
+
+//return chai request with arg app
+
+//.get with arg of '/endpoint'
+
+//then with arg of function with arg of _res
+
+//set 1stEmpty variable to _res
+
+//expect arg res to have a status 200
+
+//expect arg response body dataName to have a lengthof at least 1
+
+//return modelName count with no args
+
+//then with arg of function with arg of count
+
+//expect arg response body dataName to have length of arg count
+
+
+//Test 2
+        // Strategy: 
+        // Get back all objects, and ensure they have expected keys
+
+//it with args 'description of test' and function with no args
+
+//create 2ndEmpty variable to save future response value
+
+//return chai request with arg app
+
+//.get with arg of '/endpoint'
+
+//then with arg of function with arg of _res
+
+//expect arg response to have status 200
+
+//expect arg response to be json
+
+//expect arg response body dataName to have lengthof at least 1
+
+
+//response body dataName for each with arg function arg dataName
+
+//expect arg dataName to be a arg 'object'
+
+//expect arg dataName to include specific keys args 'key1', 'key2', etc
+
+//set 2ndEmpty to response body dataName position 0
+
+//return modelName findById arg id of 2ndEmpty
+
+//then arg function with arg dataName
+
+//expect 2ndEmpty id to equal dataName id
+
+//expect 2ndEmpty key1 to equal dataName key1
+
+//expect 2ndEmpty key2 to equal dataName key2
+
+//expect 2ndEmpty key3 to contain dataName key3
+
+//expect 2ndEmpty key4 to equal dataName key4
+
+
+
+//POST TESTS
+        // strategy: 
+        // make a POST request with data,
+        // then prove that the object we get back has
+        // right keys, and that `id` is there (which means
+        // the data was inserted into db)
+
+//describe with args of 'description of test block' and function with no args
+
+//it with args 'description of test' and function with no args
+
+//create const 1stConst that equals generate data function with no args
+
+//create 1stOptional variable that is empty --Create only if needed to perform validation of specific items
+
+//return chai request with arg app
+
+//.post with arg of '/endpoint'
+
+//.send with arg of new 1stConst
+
+//then with arg of function with arg of res
+
+//expect arg response to have status 201
+
+//expect arg response to be json
+
+//expect arg response body to be a arg 'object'
+
+//expect arg response body to include specific keys args 'key1', 'key2', etc
+
+//expect arg response body key1 to equal 1stConst key1
+
+//expect response body id to not be null
+
+//expect response body key2 to be equal to 1stConst key2
+
+//expect response body key3 to be equal to 1stConst key3
+
+
+//**FOR USE WITH OPTIONAL VARIABLE
+//set 1stOptional equal to 1stConst key4 to sort with arg (a, b) => b.valB - a.valA)[0].someDataName;
+
+//expect response body someDataName to equal 1stOptional
+
+//return modelName findById response body id
+
+//then arg function with arg dataName
+
+//expect dataName key1 to equal 1stConst key1
+
+//expect dataName key2 to equal 1stConst key2
+
+//expect dataName key3.key3a to equal 1stConst key3.key3a
+
+//expect dataName key3.key3b to equal 1stConst key3.key3b
+
+
+
+//PUT TESTS
+        // strategy:
+        //  1. Get an existing object from db
+        //  2. Make a PUT request to update that object
+        //  3. Prove object returned by request contains data we sent
+        //  4. Prove object in db is correctly updated
+
+//describe with args of 'description of test block' and function with no args
+
+//it with args 'description of test' and function with no args
+
+//create const 2ndConst {object}
+    //object is test data {key1: newKey1Val, key2: newKey2Val}
+
+//return modelName and findOne with no args
+
+//then with arg of function with dataName arg 2ndConst id equal dataName id
+
+//return chai request with arg app
+
+//.post with arg of '/endpoint/${dataName id}'
+
+//.send with arg of new 2ndConst
+
+//then with arg of function with arg of res
+
+//expect arg response to have status 204
+
+//return modelName findByID with arg 2ndConst id
+
+//then with arg function arg dataName
+
+//expect dataName key1 to equal 2ndConst key1
+
+//expect dataName key2 to equal 2ndConst key2
+
+
+//DELETE TESTS
+
+        // strategy:
+        //  1. get a DB object
+        //  2. make a DELETE request for that object id
+        //  3. assert that response has right status code
+        //  4. prove that object with the id doesn't exist in db anymore
+
+
+//describe with args of 'description of test block' and function with no args
+
+//it with args 'description of test' and function with no args
+
+//create empty variable 1stVar
+
+//return modelName and findOne with no args
+
+
+//then arg function with arg _1stVar
+
+//set 1stVar equal to _1stVar
+
+//return chai request with arg app chain delete with arg /endpoint/${1stVar id}
+
+//then arg function arg response
+
+//expect arg response to have status 204
+
+//return modelName findById arg 1stVar id
+
+//then arg function arg _1stVar
+
+//expect _1stVar to be null
+
+
+
+
+~~~
+
 ## Setup routeFile.js OR CRUD requests within server.js
 
 ~~~ js
@@ -631,11 +948,11 @@ To add
 "use strict";
 
 **Only needed if using Express Routing**
-//Create a constant to import(require) express
+//Create a constant to require express
 
 //Create a constant of router equal express router with no args
 
-//Create const of {model} to import(require) models.js
+//Create const of {model} to require models.js
 
 
 //At bottom of file
