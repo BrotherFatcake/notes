@@ -88,26 +88,39 @@
         db.<collectionName>.update({_id: updateVar}, {$set: {key1: "What to update"}});
         ~~~
 
-*   Example
-    *   ~~~ js
-        // update name on this single restaurant
+    *   Example
+        *   ~~~ js
+            // update name on this single restaurant
 
-        var objectId = db.restaurants.findOne({}, {_id: 1})._id
+            var objectId = db.restaurants.findOne({}, {_id: 1})._id
 
-        // note that we're not using method chaining here to get
-        // the object id. the code above is equivalent to this:
-        // var myObject = db.restaurants.findOne({}, {_id: 1});
-        // var objectId = myObject._id
+            // note that we're not using method chaining here to get
+            // the object id. the code above is equivalent to this:
+            // var myObject = db.restaurants.findOne({}, {_id: 1});
+            // var objectId = myObject._id
 
-        db.restaurants.updateOne(
-        {_id: objectId},
-        {$set: {name: "Foo Bar Bizz Bang"}}
-        );
-        
-        /*see our changes*/
-        
-        db.restaurants.findOne({_id: objectId});
+            db.restaurants.updateOne(
+            {_id: objectId},
+            {$set: {name: "Foo Bar Bizz Bang"}}
+            );
+            
+            /*see our changes*/
+            
+            db.restaurants.findOne({_id: objectId});
+            ~~~
+
+*   Push new **ARRAY** content to an object
+    *   Determine attribute to update object/s
+    *   If array does not yet exist as part of the object Mongo will add it!
+    ~~~ js
+    db.<collectionName>.update({keyToId: keyToIdVal}, {$push: {arrayName: {"arrayKey": "arrayKeyVal or string"}}})
+    ~~~
+
+    *   Example
+        ~~~ js
+        db.blogposts.update({_id: ObjectId("5b3ff56e6021f920da673593")}, {$push: {comments: {"content": "wubba dubba lub dub!!"}}})
         ~~~
+
 
 # Replacing documents
 

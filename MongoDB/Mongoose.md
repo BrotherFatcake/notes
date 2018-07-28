@@ -1,4 +1,10 @@
+<x id='top'></x>
+[General Mongoose](#genmongoo) | [Data Model](#gendatamod) | [Virtuals and Methods](#virtualsmethod) | [CRUD](#crud) | [CRUD-Find/GET](#findget) | [CRUD-Create/POST](#createpost) | [CRUD-Update/PUT](#updateput) | [CRUD-Delete](#delete) | [CRUD-Key Points](#keys) | [Heroku, mLab, Travis CI](#hermlabtrav) | [Practice Comments](#practice) | [server.js](#server) | [config.js](#config) | [models.js](#models) | [test.js](#testfile) | [Route File](#route)
+
+-------------------------------------------
+
 #  Mongoose Configuration
+<x id='genmongoo'></x>
 
 *   Import Mongoose
     *   ~~~ js
@@ -51,8 +57,9 @@
     *   If ALL of the above was successful call a callback function to signal everything is up and running or return a Promise.
     *   *Note that closeServer needs to access a server object, and server gets created in runServer. That's why we declare let server; outside both functions.
 
-
+[Top](#top) 
 #  Data Modeling
+<x id='gendatamod'></x>
 
 *   For each model we define a schema.
     *   **SCHEMA** - specifies how all documents in a specific collection should look - specify the properties the document has along with the schema type, and other settings (required, default values, etc.)
@@ -108,7 +115,9 @@
         ~~~
 *   `.findOne()` returns a promise, if function is successful the callback in `.then()` runs.
 
+[Top](#top) 
 **Virtuals**
+<x id='virtualsmethod'></x>
 
 *   [**Virtuals**](http://mongoosejs.com/docs/guide.html#virtuals) provide ability to create derived properties on model instances.
     *   Address in example model is an object, can create a new property that is 'human readable' with **Virtuals**
@@ -146,11 +155,14 @@
         };
         ~~~
 
+[Top](#top) 
 #   Find, Create, Update, Delete via GET, POST, DELETE, PUT
+<x id='crud'></x>
 
 ##  Finding Documents
 
 ### Find all
+<x id='findget'></x>
 
 *   User makes a `app.get('/endpointName')` request which calls `Restaurant.find()` to return all documents in the collection.
     *   If the query is successful object with property `restaurants` is returned that is an `array` of restaurant objects.
@@ -279,7 +291,9 @@
 *   For a full discussion of available query operators, consult the Mongo docs on [getting started with queries](https://docs.mongodb.com/getting-started/shell/query/) and on [query operators](https://docs.mongodb.com/manual/reference/operator/query/).
 
 
+[Top](#top) 
 ##  Create Documents
+<x id='createpost'></x>
 
 *   To create documents `app.post('/endpointName')` calls the `.create()` method
     *   The code first checks the request for the required fields, if any are missing an error is returned
@@ -341,8 +355,9 @@
         });
 
 
-
+[Top](#top) 
 ##  Update Documents
+<x id='updateput'></x>
 
 *   To update documents `app.put('/endpointName/:id')` calls the `.findByIdAndUpdate('arg1', 'arg2')` method.
     *   The code first checks that the `id` in the request params and request body are the same.
@@ -395,8 +410,9 @@
         });
         ~~~
 
-
+[Top](#top) 
 ##  Delete Documents
+<x id='delete'></x>
 
 *   To delete documents `app.delete('/endpointName/:id')` calls the `.findByIdAndRemove('arg1')` method.
    
@@ -414,7 +430,9 @@
         });
         ~~~
 
+[Top](#top) 
 #   Key points
+<x id='keys'></x>
 
 *   Configuring Mongoose: You'll always need to specify your database URL and then start your Node.js server. If you're connecting to a local database rather than mLab, be sure to start the local database server before starting Node.js.
 
@@ -425,8 +443,9 @@
 *   Retrieving vs. presenting data: Just because our data looks one way in the database doesn't mean that our API needs to pass along the raw data. If you want to have a standard way of representing your documents in your API, adding a serialize() instance method can be a good way to achieve that (note that there's nothing magical about the name serialize, we just chose that name because it describes how the object needs to be turned into a JSON string when sent via our REST API).
 
 
- 
-#Deploy to Heroku, mLab and Travis CI
+[Top](#top) 
+# Deploy to Heroku, mLab and Travis CI
+<x id='hermlabtrav'></x>
 
 ## mLab - Mongo DB
 
@@ -464,19 +483,100 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 7.  Click `Open app`, app can now receive CRUD requests from Postman
 
 
-## Travis CI
+## Mocha Chai package.json config
 
-~~~
-To add
-~~~ 
+1.  Go to project directory and run:
+
+2.  `npm install mocha`
+
+3.  `npm install chai`
+
+4.  `npm install chai-http`
+
+5.  `npm install faker`
+
+6.  `vi package.json`
+
+7.  Update `"test"` key value to `./path/to/test.js`
+
+8.  Save and quit
+
+
+## Travis CI & Heroku deploy
+
+**TRAVIS CI**
+1.  Go to project directory and `touch .travis.yml && vi .travis.yml` to create and open the file
+
+2.  Add the below text to the .travis.yml file:
+        ~~~ js
+        language: node_js
+        node_js: node
+        services:
+        - mongodb
+        ~~~ 
+
+3.  Create/Access Repo on GitHub and open `Settings > Integrations & Services`
+
+4.  Select `Add service` and search for and select `Travis CI`, then click `Add service`
+
+5.  Open [Travis CI](https://travis-ci.org/) and access your profile
+
+6.  Search for the project and enable the switch
+
+7.  To trigger a build commit changes to git repo or perform `git commit --allow-empty`.  Return to OR refresh the main Travis CI page to view build status
+
+**HEROKU**
+
+8.  If needed create new DB and DB User on mLab (Instructions above)
+
+9.  If needed seed data on new DB
+
+10. Check Travis CI and Ruby verions
+    ~~~ js
+    termPrompt$ ruby -v
+
+    termPrompt$ travis version
+
+    ~~~
+    *   Verify versions against install instructions OR if needed install [Travis CI CLI](https://github.com/travis-ci/travis.rb#installation)
+
+11. Run `travis login` and enter GitHub `UserName` and `Password`
+
+12. Run `travis setup heroku`, if changes are not needed hit `Enter` to continue through the prompts
+
+13. Verify Travis changes by entering `git diff`
+
+14. Enter `heroku create` and document the name of your app presented when complete.
+
+
+15. Edit .travis.yml and update `deploy:app:` with the Heroku name - `app: random-words-89873`
+
+16.  Navigate to [Heroku](https://id.heroku.com/login)
+
+17.  Once on your dashboard locate the app name documented in `Step 1` and open it.  Then access `Setting`.
+
+18.  Click `Reveal Config Vars`, ADD `KEY = DATABASE_URL` and `VALUE = mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>`
+
+19. Trigger a build: commit changes to git repo or perform `git commit --allow-empty`.  Return to OR refresh the main Travis CI page to view build status.  Travis CI will build, test, and deploy to Heroku.
+
+20.  Run `heroku ps:scale web=1` to start up a free web dyno on the server.
+
+21. After Travis CI builds, tests and deploys to Heroku return to Heroku `settings` and click `Open app`, app can now receive CRUD requests from Postman
 
 
 
+
+
+[Top](#top) 
 
 # Example Comments for Practice
+<x id='practice'></x>
+
 -------------------------------------------
 
+[Top](#top) 
 ## Setup server.js
+<x id='server'></x>
 
 ~~~ js
 
@@ -571,8 +671,9 @@ To add
 
 ~~~
 
-
+[Top](#top) 
 ## Setup config.js
+<x id='config'></x>
 
 ~~~ js
 
@@ -589,8 +690,9 @@ To add
 
 ~~~
 
-
-## Setup models.js
+[Top](#top) 
+## Setup models.js - Single DB Collection
+<x id='models'></x>
 
 ~~~ js
 
@@ -623,8 +725,41 @@ To add
 
 ~~~
 
+## Setup models.js - Multiple DB Collection
+~~~ js
 
+//Use strict
+"use strict";
+
+//Create a constant to require mongoose
+
+//Create const for the schemaName equals mongoose Schema ({schemaObject})
+
+    //Within schemaObject specify fieldName: {type: <type>, required: true/false/'do not include'}
+        //Example: fieldName: {type: String, required: true}, fieldName2: {type: String}, include nested fields
+
+//Create **VIRTUAL** to return more human readable sub-values
+    //Example personName may have sub-values of first and last
+    //schemaName virtual with arg 'virtualName' get function with no args
+
+    //return template literal placeholders this.personName.first and this.personName.last, trim with no args
+
+//Create cleanUp function to specify what should be returned via the API
+//schemaName methods methodName equal function with no args
+
+    //return {object}
+    //Within object {key1: this.val1, key2: this.val2, key3: this.virtualName}
+
+
+//Create const modelName is mongoose model with args '<DB collectionName>' and schemaName
+
+//module exports equal {modelName}
+
+~~~
+
+[Top](#top) 
 ## Setup test file
+<x id='testfile'></x>
 
 ~~~ js
 //use strict
@@ -654,13 +789,13 @@ To add
 
 //create seed data function with no args
 
-//log info with message to console that data is seeding
+    //log info with message to console that data is seeding
 
-//create const of empty array for seed data
+    //create const of empty array for seed data
 
-//loop through x number of times and push seed data with arg of generate data function with no args
+    //loop through x number of times and push seed data with arg of generate data function with no args
 
-//return model and insertMany with arg of seed data
+    //return modelName and insertMany with arg of seed data
 
 
 //create generate data function with no args
@@ -690,39 +825,37 @@ To add
 
 //create tear down function with no args
 
-//warn to console that DB is being deleted
+    //warn to console that DB is being deleted
 
-//return mongoose connection dropDatabase with no args
+    //return mongoose connection dropDatabase with no args
 
 
 //describe with args of 'description' and function with no args 
 
-//BEFORE - RUNS ONCE TO START SERVER
-//before with arg of function with no args
+    //BEFORE - RUNS ONCE TO START SERVER
+    //before with arg of function with no args
 
-//return runServer with arg of test DB url
-
-
-//BEFOREEACH - RUNS WITH EACH TEST TO SEED DATA
-//beforeEach with arg of function with no args
-
-//return seed data function with no args
+        //return runServer with arg of test DB url
 
 
-//AFTEREACH - RUNS AT THE END OF EACH TEST TO CLEAR THE DB
-//afterEach with arg of function with no args
+    //BEFOREEACH - RUNS WITH EACH TEST TO SEED DATA
+    //beforeEach with arg of function with no args
 
-//return tear down function with no args
+        //return seed data function with no args
 
-//AFTER - RUNS ONCE TO CLOSE SERVER WHEN TESTING IS COMPLETE
-//after with arg of function with no args
 
-//return closeServer with arg of test DB url
+    //AFTEREACH - RUNS AT THE END OF EACH TEST TO CLEAR THE DB
+    //afterEach with arg of function with no args
+
+        //return tear down function with no args
+
+    //AFTER - RUNS ONCE TO STOP SERVER WHEN TESTING IS COMPLETE
+    //after with arg of function with no args
+
+        //return closeServer with no args
 		
 
 //**TESTS**
-
-
 
 //GET TESTS
 
@@ -740,25 +873,25 @@ To add
 
 //it with args 'description of test' and function with no args
 
-//create 1stEmpty variable to save future response value
+    //create 1stEmpty variable to save future response value
 
-//return chai request with arg app
+        //return chai request with arg app
 
-//.get with arg of '/endpoint'
+        //.get with arg of '/endpoint'
 
-//then with arg of function with arg of _res
+        //then with arg of function with arg of _res
 
-//set 1stEmpty variable to _res
+            //set 1stEmpty variable to _res
 
-//expect arg res to have a status 200
+            //expect arg res to have a status 200
 
-//expect arg response body dataName to have a lengthof at least 1
+            //expect arg response body collectionName to have a lengthof at least 1
 
-//return modelName count with no args
+            //return modelName count with no args
 
-//then with arg of function with arg of count
+        //then with arg of function with arg of count
 
-//expect arg response body dataName to have length of arg count
+            //expect arg response body collectionName to have length of arg count
 
 
 //Test 2
@@ -767,42 +900,38 @@ To add
 
 //it with args 'description of test' and function with no args
 
-//create 2ndEmpty variable to save future response value
+        //create 2ndEmpty variable (do not reuse 1st) to save future response value
 
-//return chai request with arg app
+        //return chai request with arg app
 
-//.get with arg of '/endpoint'
+        //.get with arg of '/endpoint'
 
-//then with arg of function with arg of _res
+        //then with arg of function with arg of _res
 
-//expect arg response to have status 200
+            //expect arg response to have status 200
 
-//expect arg response to be json
+            //expect arg response to be json
 
-//expect arg response body dataName to have lengthof at least 1
+            //expect arg response body collectionName to have lengthof at least 1
 
+                //response body collectionName for each with arg function arg dataName
+                //expect arg dataName to be a arg 'object'
+                //expect arg dataName to include keys args 'key1', 'key2', etc
 
-//response body dataName for each with arg function arg dataName
+                //set 2ndEmpty to response body collectionName position 0
+                //return modelName findById arg id of 2ndEmpty
 
-//expect arg dataName to be a arg 'object'
+        //then arg function with arg dataName
 
-//expect arg dataName to include specific keys args 'key1', 'key2', etc
+            //expect 2ndEmpty id to equal dataName id
 
-//set 2ndEmpty to response body dataName position 0
+            //expect 2ndEmpty key1 to equal dataName key1
 
-//return modelName findById arg id of 2ndEmpty
+            //expect 2ndEmpty key2 to equal dataName key2
 
-//then arg function with arg dataName
+            //expect 2ndEmpty key3 to contain dataName key3.key3a or key3.key3b
 
-//expect 2ndEmpty id to equal dataName id
-
-//expect 2ndEmpty key1 to equal dataName key1
-
-//expect 2ndEmpty key2 to equal dataName key2
-
-//expect 2ndEmpty key3 to contain dataName key3
-
-//expect 2ndEmpty key4 to equal dataName key4
+            //expect 2ndEmpty key4 to equal dataName key4
 
 
 
@@ -817,51 +946,55 @@ To add
 
 //it with args 'description of test' and function with no args
 
-//create const 1stConst that equals generate data function with no args
+    //create const 1stConst that equals generate data function with no args
 
-//create 1stOptional variable that is empty --Create only if needed to perform validation of specific items
+    //create 1stOptional variable that is empty --Create only if needed to perform validation of specific items
 
-//return chai request with arg app
+    //return chai request with arg app
 
-//.post with arg of '/endpoint'
+        //.post with arg of '/endpoint'
 
-//.send with arg of new 1stConst
+            //.send with arg of new 1stConst
 
-//then with arg of function with arg of res
+        //then with arg of function with arg of res
 
-//expect arg response to have status 201
+            //expect arg response to have status 201
 
-//expect arg response to be json
+            //expect arg response to be json
 
-//expect arg response body to be a arg 'object'
+            //expect arg response body to be a arg 'object'
 
-//expect arg response body to include specific keys args 'key1', 'key2', etc
+            //expect arg response body to include specific keys args 'key1', 'key2', etc
 
-//expect arg response body key1 to equal 1stConst key1
+            //expect arg response body key1 to equal 1stConst key1
 
-//expect response body id to not be null
+            //expect response body id to not be null
 
-//expect response body key2 to be equal to 1stConst key2
+            //expect response body key2 to be equal to 1stConst key2
 
-//expect response body key3 to be equal to 1stConst key3
+            //expect response body key3 to be equal to 1stConst key3
 
 
-//**FOR USE WITH OPTIONAL VARIABLE
-//set 1stOptional equal to 1stConst key4 to sort with arg (a, b) => b.valB - a.valA)[0].someDataName;
+                //**FOR USE WITH OPTIONAL VARIABLE
+                //set 1stOptional equal to 1stConst key4 to sort with arg (a, b) => b.valB - a.valA)[0].someDataName;
 
-//expect response body someDataName to equal 1stOptional
+                //expect response body someDataName to equal 1stOptional
 
-//return modelName findById response body id
+                //**END OPTIONAL VARIABLE BLOCK
 
-//then arg function with arg dataName
 
-//expect dataName key1 to equal 1stConst key1
+            //return modelName findById response body id
 
-//expect dataName key2 to equal 1stConst key2
 
-//expect dataName key3.key3a to equal 1stConst key3.key3a
+        //then arg function with arg dataName
 
-//expect dataName key3.key3b to equal 1stConst key3.key3b
+            //expect dataName key1 to equal 1stConst key1
+
+            //expect dataName key2 to equal 1stConst key2
+
+            //expect dataName key3.key3a to equal 1stConst key3.key3a
+
+            //expect dataName key3.key3b to equal 1stConst key3.key3b
 
 
 
@@ -876,30 +1009,32 @@ To add
 
 //it with args 'description of test' and function with no args
 
-//create const 2ndConst {object}
-    //object is test data {key1: newKey1Val, key2: newKey2Val}
+    //create const 2ndConst {object}
+        //object is test data {key1: newKey1Val, key2: newKey2Val}
 
-//return modelName and findOne with no args
+    //return modelName and findOne with no args
 
-//then with arg of function with dataName arg 2ndConst id equal dataName id
+            //then with arg of function with arg dataName 
+            
+            //2ndConst id equal dataName id
 
-//return chai request with arg app
+            //return chai request with arg app
 
-//.post with arg of '/endpoint/${dataName id}'
+            //.put with arg of '/endpoint/${dataName id}'
 
-//.send with arg of new 2ndConst
+            //.send with arg of new 2ndConst
 
-//then with arg of function with arg of res
+        //then with arg of function with arg of res
 
-//expect arg response to have status 204
+            //expect arg response to have status 204
 
-//return modelName findByID with arg 2ndConst id
+            //return modelName findByID with arg 2ndConst id
 
-//then with arg function arg dataName
+        //then with arg function arg dataName
 
-//expect dataName key1 to equal 2ndConst key1
+            //expect dataName key1 to equal 2ndConst key1
 
-//expect dataName key2 to equal 2ndConst key2
+            //expect dataName key2 to equal 2ndConst key2
 
 
 //DELETE TESTS
@@ -915,33 +1050,35 @@ To add
 
 //it with args 'description of test' and function with no args
 
-//create empty variable 1stVar
+    //create empty variable 1stVar
 
-//return modelName and findOne with no args
+    //return modelName and findOne with no args
 
 
-//then arg function with arg _1stVar
+        //then arg function with arg _1stVar
 
-//set 1stVar equal to _1stVar
+            //set 1stVar equal to _1stVar
 
-//return chai request with arg app chain delete with arg /endpoint/${1stVar id}
+            //return chai request with arg app chain delete with arg /endpoint/${1stVar id}
 
-//then arg function arg response
+        //then arg function arg response
 
-//expect arg response to have status 204
+            //expect arg response to have status 204
 
-//return modelName findById arg 1stVar id
+            //return modelName findById arg 1stVar id
 
-//then arg function arg _1stVar
+        //then arg function arg _1stVar
 
-//expect _1stVar to be null
+            //expect _1stVar to be null
 
 
 
 
 ~~~
 
+[Top](#top) 
 ## Setup routeFile.js OR CRUD requests within server.js
+<x id='route'></x>
 
 ~~~ js
 //Use strict
@@ -1070,7 +1207,7 @@ To add
 
         //modelName call findByAndUpdate with args request params id and object with $set/val pair where val is makeUpdate
 
-        //then dataName => respond with json message naming request body id has been updated, status 204, and end with no args
+        //then dataName => respond with status 204, json message naming request body id has been updated, and end with no args
             //where data name (ex. student or post or data) is the object being returned
 
 
@@ -1088,7 +1225,7 @@ To add
 
     //modelName findByIdAndRemove with arg request params id
 
-    //then dataName => respond with json message naming request params id has been removed, status 204, and end with no args
+    //then dataName => respond with status 204, json message naming request params id has been removed, and end with no args
         //where data name (ex. student or post or data) is the object being returned
 
 
@@ -1100,3 +1237,4 @@ To add
     //respond status 500 with json message stating error ocurred
 ~~~
 
+[Top](#top) 
