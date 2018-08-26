@@ -20,17 +20,19 @@
 
 //Create a constant to require morgan for logging
 
-//mongoose Promise to use global ES6 Promises
+//Create a constant to require passport for authentication
+
+//mongoose Promise equals global ES6 Promises
 
 //Create const of PORT, DATABASE_URL to require config.js
 
 //create const of Primary {modelName}  OR {modelName1, modelName2} to require models file
 
-//Create constant that creates a new app instance by calling top level express function
+//Create constant that creates a new app instance by calling top level express with no args
 
-//tell app to use express.json
+//tell app to use with arg express.json with no arg
 
-//tell app to use morgan for common logging
+//tell app to use morgan with arg 'common' logging
 
 **If using Express Routing by putting CRUD code in separate JS file**
 
@@ -54,9 +56,9 @@
 
 //function named startServer takes args databaseUrl and port = PORT
 
-//return a new promise with args resolve and reject =>
+//return a new Promise( with args (resolve and reject) =>
 
-    //tell mongoose to connect with args databaseUrl and err =>
+    //tell mongoose to connect with open args (databaseUrl and err =>
 
         //if err return reject err
 
@@ -64,12 +66,12 @@
 
             //log to console the app is listening to port ${port}
 
-            //resolve for outstanding promise
+                //resolve with no args for outstanding promise
 
 
-        //chain on args `error` and err =>
+        //chain on with args `error` and err =>
 
-        //mongoose disconnect
+        //mongoose disconnect with no args
 
         //reject with arg err for outstanding promise
 
@@ -78,27 +80,27 @@
 
 //function named stopServer has no args
 
-    //return mongoose disconnect with no args then with no args =>
+    //return mongoose disconnect with no args then( with no args() =>
 
-    //return a new promise with args resolve and reject =>
+    //return a new promise with args (resolve and reject) =>
 
     //log to console the server is being stopped
 
-    //tell server to close with arg err =>
+    //tell server to close( with arg err =>
 
         //if err return reject with err for outstanding promise
 
-        //resolve for outstanding promise
+        //resolve with no args for outstanding promise
 
 
 
 //Code to allow server to be called directly or via tests
 //if require main is strictly equal to module
 
-//runServer with arg DATABASE_URL, catch with arg err => error to console with arg err to console not a message 
+//startServer with arg DATABASE_URL, catch with arg err => error to console with arg err to console not a message 
 
 
-//export the modules created app, runServer and closeServer
+//module exports created {app, startServer, stopServer}
 
 ~~~
 
@@ -143,7 +145,7 @@
 //Create const for "Other" SCHEMA (this could be used for appending data ("blog comments") associated with the Primary and Secondary schemas)
 //schemaName equals mongoose Schema ({schemaObject})
 //Within schemaObject specify fieldName: {type: <type>, required: true/false/'do not include'}
-//Example: fieldName: {type: String}, fieldName2: {type: String, required: true}, fieldName3: {type: Array}, include nested field
+//Example: fieldName: {type: String}, fieldName2: {type: String, required: true}, fieldName3: {type: Array}, use nested field/s names if schema for nested items
 
 //Create const for the "Secondary" SCHEMA (This could be a collection of user data that can be referenced against the primary schema ONE-to-MANY)
 //schemaName equals mongoose Schema ({schemaObject})
@@ -153,7 +155,7 @@
 
     
     //within the object reference data from Primary schema
-    //key: {type: mongoose Scheema Types ObjectId, reference: <DB CollectionName>} 
+    //key: {type: mongoose Scheema Types ObjectId, ref: '<DB CollectionName>'} 
 
     //within the object reference data from Other schema
     //key: [otherSchemaName]
@@ -163,7 +165,7 @@
 //Create Pre-Hook that can ben used by Virtuals when data is being retrieved from a different collection using a findOne()
 //SecondarySchemaName pre with args of findOne and function with arg next
     
-    //this populate with arg 'keyName' that needs to be populated
+    //this populate with arg of secondary schema 'keyName' that needs to be populated
 
     //next with no args
 
@@ -171,14 +173,14 @@
 //Create Pre-Hook that can ben used by Virtuals when data is being retrieved from a different collection using find()
 //SecondarySchemaName pre with args of find and function with arg next
     
-    //this populate with arg 'keyName' that needs to be populated
+    //this populate with arg of secondary schema 'keyName' that needs to be populated
 
     //next with no args
 
 
 //Create **VIRTUAL** to return more human readable sub-values
     //Example personName may have sub-values of first and last
-    //schemaName virtual with arg 'virtualName' get function with no args
+    //schemaName virtual with arg 'virtualName' get with arg function with no args
 
     //return template literal placeholders this.personName.first and this.personName.last, trim with no args
 
@@ -199,11 +201,390 @@
 
 
 
-//Create const modelName is mongoose model with args '<DB collectionName>' and Primary schemaName
+//Create const modelName equals mongoose model with args '<DB collectionName>' and Primary schemaName
 
-//Create const modelName2 is mongoose model with args '<DB collectionName>' and Secondary schemaName
+//Create const modelName2 equals mongoose model with args '<DB collectionName>' and Secondary schemaName
 
-//export module equal {modelName} OR {modelName1, modelName2}
+//module export equal {modelName} OR {modelName1, modelName2}
+~~~
+
+
+[Top](#top)
+## Setup PRIMARY routeFile.js OR CRUD requests within server.js
+<x id='primaryroute'></x>
+
+~~~ js
+//Use strict
+"use strict";
+
+**Only needed if using Express Routing**
+//Create a constant to require express
+
+//Create a constant of router equal express Router with no args
+
+//create const of Primary {modelName}  OR {modelName1, modelName2} to require models file
+//Create const of modelName or {modelName} to require models.js - use {} if there are multiple models
+
+
+//At bottom of file
+//module exports equals the const router
+
+**End Express Routing specific**
+
+
+
+**Needed for all CRUD**
+**If part of server.js use 'app.' instead of 'router.' and '/endPointName' and '/endPointName/:id' instead of '/' and '/:id'**
+
+//GET - ALL
+
+//call router or app get from '/' with args request response =>
+    //modelName find with no args
+    //then( with arg <DB collectionName> =>
+        //respond with json object key/val pair, key is <DB collectionName> and val is <DB collectionName> map( with arg
+        //(dataName) => (dataName) through cleanUp method with no args 
+    
+    //ERROR CATCHER
+    //catch err =>
+        //log error err to console
+        //respond status 500 and json object message stating error ocurred
+
+
+//GET by ID
+
+//call router or app get from '/:id' with args request response =>
+    //modelName findById with args request params id
+    
+    //then dataName => respond json non-object with arg of dataName cleanUp method
+    //where data name (ex. student or post or data) is the object being returned
+
+    //ERROR CATCHER
+    //catch err =>
+        //log error err to console
+        //respond status 500 with json message stating error ocurred
+
+
+//POST
+
+//call router or app post from '/' with args request response =>
+    //create const array that specifies required fields
+        //If required field has sub-fields they do not need to be specified here it would be specified 
+        //in the POST request sent from postman
+
+    //loop through requiredFields
+    
+        //create const field and assign requiredField position i inside loop
+
+        //IF field is not in the request body
+            //create const for error message naming missing field from body
+            //log the error to console with arg errMessage
+            //return response status 400 and send errMessage
+
+    
+    //DETERMINE IF KEY VAL ALREADY EXISTS IN DB - this is needed when there is a UNIQUE value that must be created
+    //modelName and find one {object pair}
+        //Within object is {key: val} or {key: req.body.val}
+
+    //then( dataName => 
+
+        //IF dataName exists
+
+            //create const for error message naming missing field from body
+            //log the error to console with arg errMessage
+            //return response status 400 and send errMessage
+        
+        
+        //ELSE when dataName does not already exist continue with creation
+
+            //CREATE NEW DB OBJECT
+            //modelName create {object} that contains the key req body pair values
+                //Within object {key1: req.body.val1, ley2: req.body.val2}
+                //If key/val has sub-key/val they do not need to be specified here it would be specified 
+                //in the POST request sent from postman
+
+            
+            //then dataName => respond status 201 and json dataName send through cleanUp
+            //where data name (ex. student or post or data) is the object being returned
+
+            //END if/else flow for unique check
+            
+        //ERROR CATCHER
+        //catch err =>
+            //log error err to console
+            //respond status 500 with json message stating error ocurred
+
+
+//PUT
+            
+//call router or app put from '/:id' with args request response =>
+                
+    //IF NOT request params id AND request body id AND request params id strict equal request body id 
+        
+        //create const for error message stating request params id AND request body id must match
+        
+        //log the error to console with arg errMessage
+        
+        //return response status 400 and send errMessage
+ 
+    //create const of empty object for fields to update
+    
+    //create const array of fields that are allowed to be updated
+
+    //for each canUpdate with arg dataArg =>
+
+        //if dataArg is in request body
+
+            //assign the request body[dataArg] to toUpdate[dataArg] object
+
+
+    //DETERMINE IF KEY VAL ALREADY EXISTS IN DB - this is needed when there is a UNIQUE value that can be updated
+    //call modelName and find one {object pair}
+        //Within object is {key: val} or {key: req.body.val}
+
+    //then dataName => 
+        
+        //IF dataName exists
+            
+            //create const for error message naming missing field from body
+            //log the error to console with arg errMessage
+            //return response status 400 and send errMessage
+                    
+        //ELSE when dataName does not already exist continue with update
+    
+        //modelName call findByAndUpdate with args request params id, {object} with $set/val pair where val is toUpdate, {object} of new: true, and function w/ no args
+            //respond with json message non-object 
+                //ex -> res.json(`${req.body.id} has been updated`)
+            
+            //OR
+
+            //respond with json object message
+                //ex -> res.json({ "code": "200", "reason": "SUCCESS", "location": "", "message": `User record has been updated` })
+            
+
+        //END flow for unique check
+
+
+
+        //ERROR CATCHER
+        //catch err =>
+    
+            //log error err to console
+
+            //respond status 500 with json message stating error ocurred
+
+    //DELETE
+    
+//call router or app delete from '/:id' with args request response =>
+
+    //DELETE MULTIPLE SHARED VALUES IN DB FROM SECOND Collection - this is needed when there is a UNIQUE Primary Collection value being deleted in a one to many 
+    //set the request ID to a parameter
+
+    //Call secondary Model and deleteMany based on shared {key/val pair}
+    
+    //then dataName => respond status 204
+
+    //END flow for unique check
+
+    //modelName call findByIdAndRemove with args request params id, {object} with $set/val pair where val is toUpdate, and function w/ no args
+        //respond with json message non-object 
+            //ex -> res.json(`${req.body.id} has been updated`)
+        
+        //OR
+
+        //respond with json object message
+            //ex -> res.json({ "code": "200", "reason": "SUCCESS", "location": "", "message": `User record has been updated` })
+
+    
+    //ERROR CATCHER
+    //catch err =>
+
+        //log error err to console
+
+        //respond status 500 with json message stating error ocurred
+~~~
+
+[Top](#top)
+## Setup SECONDARY routeFile.js OR CRUD requests within server.js
+<x id='secondroute'></x>
+
+~~~ js
+//Use strict
+"use strict";
+
+**Only needed if using Express Routing**
+//Create a constant to require express
+
+//Create a constant of router equal express Router with no args
+
+//create const of Primary {modelName}  OR {modelName1, modelName2} to require models file
+//Create const of modelName or {modelName} to require models.js - use {} if there are multiple models
+
+
+//At bottom of file
+//module exports the const router
+
+**End Express Routing specific**
+
+
+
+**Needed for all CRUD**
+**If part of server.js use 'app.' instead of 'router.' and '/endPointName' and '/endPointName/:id' instead of '/' and '/:id'**
+
+//GET - ALL
+
+//call router or app get from '/' with args request response =>
+    //modelName find with no args
+    //then with arg <DB collectionName> =>
+        //respond with json object key/val pair, key is <DB collectionName> and val is <DB collectionName> map
+            
+            //New map (arrayName) => (arrayName) through cleanUp method with no args 
+
+    //ERROR CATCHER
+    //catch err =>
+        //log error err to console
+        //respond status 500 and json object message stating error ocurred
+
+//GET by ID
+
+//call router or app get from '/:id' with args request response =>
+    //modelName findById with args request params id
+    
+    //then dataName => respond json non-object with arg of dataName cleanUp method
+    //where data name (ex. student or post or data) is the object being returned
+
+
+    //ERROR CATCHER
+    //catch err =>
+        //log error err to console
+        //respond status 500 with json message stating error ocurred
+
+
+
+
+//POST
+
+//call router or app post from '/' with args request response =>
+    //create const array that specifies required fields
+        //If required field has sub-fields they do not need to be specified here it would be specified 
+        //in the POST request sent from postman
+
+    //loop through requiredFields
+    
+        //create const field and assign requiredField position i during loop
+
+        //IF field is not in the request body
+            //create const for error message naming missing field from body
+            //log the error to console with arg errMessage
+            //return response status 400 and send errMessage
+ 
+
+    //Verify unique post value exists in Primary Collection
+    //primaryModel find by id with args {req.body.key} and (callback) function with args err and <<callbackVarName>>
+
+        //set value of {req.body.key} = <<callbackVarName>>
+
+    //then dataName => 
+         
+            //IF not dataName 
+            //create const for error message naming missing field from body
+            //log the error to console with arg errMessage
+            //return response status 400 and send errMessage
+
+
+        //ELSE when dataName does not already exist continue with creation
+
+        //CREATE NEW DB OBJECT
+        //modelName create {object} that contains the key req body pair values
+
+            //Within object {key1: req.body.val1, ley2: req.body.val2}
+            //If key/val has sub-key/val they do not need to be specified here it would be specified 
+            //in the POST request sent from postman
+
+
+        //then dataName =>
+
+            //then dataName => respond status 201 and json dataName send through cleanUp
+            //where data name (ex. student or post or data) is the object being returned
+
+                
+        //ERROR CATCHER
+        //catch err =>
+                    //log error err to console
+                    //respond status 500 with json message stating error ocurred
+
+
+    //END flow for unique check
+
+            //ERROR CATCHER
+        //catch err =>
+            //log error err to console
+            //respond status 500 with json message stating error ocurred
+
+
+
+//PUT
+
+//call router or app put from '/:id' with args request response =>
+                
+    //IF NOT request params id AND request body id AND request params id strict equal request body id 
+        
+        //create const for error message stating request params id AND request body id must match
+        
+        //log the error to console with arg errMessage
+        
+        //return response status 400 and send errMessage
+
+    
+    //create const of empty object for fields to update
+    
+    //create const array of fields that are allowed to be updated
+
+    //for each canUpdate with arg dataArg =>
+
+        //if dataArg is in request body
+
+            //assign the request body[dataArg] to toUpdate[dataArg] object
+
+        //modelName call findByAndUpdate with args request params id, {object} with $set/val pair where val is toUpdate, {object} of new: true, and function w/ no args
+            //respond with json message non-object 
+                //ex -> res.json(`${req.body.id} has been updated`)
+            
+            //OR
+
+            //respond with json object message
+                //ex -> res.json({ "code": "200", "reason": "SUCCESS", "location": "", "message": `User record has been updated` })
+
+        //ERROR CATCHER
+        //catch err =>
+    
+            //log error err to console
+
+            //respond status 500 with json message stating error ocurred
+
+    
+    //DELETE
+    
+//call router or app delete from '/:id' with args request response =>
+
+    //modelName findByIdAndRemove with arg request params id
+
+    //modelName call findByIdAndRemove with args request params id, {object} with $set/val pair where val is toUpdate, and function w/ no args
+        //respond with json message non-object 
+            //ex -> res.json(`${req.body.id} has been updated`)
+        
+        //OR
+
+        //respond with json object message
+            //ex -> res.json({ "code": "200", "reason": "SUCCESS", "location": "", "message": `User record has been updated` })
+
+    
+    //ERROR CATCHER
+    //catch err =>
+
+        //log error err to console
+
+        //respond status 500 with json message stating error ocurred
+
 ~~~
 
 [Top](#top)
@@ -524,365 +905,6 @@
 
 
 
-
-~~~
-
-[Top](#top)
-## Setup PRIMARY routeFile.js OR CRUD requests within server.js
-<x id='primaryroute'></x>
-
-~~~ js
-//Use strict
-"use strict";
-
-**Only needed if using Express Routing**
-//Create a constant to require express
-
-//Create a constant of router equal express router with no args
-
-//create const of Primary {modelName}  OR {modelName1, modelName2} to require models file
-
-
-//At bottom of file
-//module exports the const router
-
-**End Express Routing specific**
-
-
-
-**Needed for all CRUD**
-**If part of server.js use 'app.' instead of 'router.' and '/endPointName' and '/endPointName/:id' instead of '/' and '/:id'**
-
-//GET - ALL
-
-//call router or app get from '/' with args request response =>
-    //modelName find with no args
-    //then with arg <DB collectionName> =>
-        //respond with json object key/val pair, key is <DB collectionName> and val is <DB collectionName> map
-            
-            //New map (arrayName) => (arrayName) through cleanUp method with no args 
-    
-    //ERROR CATCHER
-    //catch err =>
-        //log error err to console
-        //respond status 500 and json object message stating error ocurred
-
-
-//GET by ID
-
-//call router or app get from '/:id' with args request response =>
-    //modelName findById with args request params id
-    
-    //then dataName => respond json non-object with arg of dataName cleanUp method
-    //where data name (ex. student or post or data) is the object being returned
-
-    //ERROR CATCHER
-    //catch err =>
-        //log error err to console
-        //respond status 500 with json message stating error ocurred
-
-
-//POST
-
-//call router or app post from '/' with args request response =>
-    //create const array that specifies required fields
-        //If required field has sub-fields they do not need to be specified here it would be specified 
-        //in the POST request sent from postman
-
-    //loop through requiredFields
-    
-        //create const field and assign requiredField position i during loop
-
-        //IF field is not in the request body
-            //create const for error message naming missing field from body
-            //log the error to console with arg errMessage
-            //return response status 400 and send errMessage
-
-    
-    //DETERMINE IF KEY VAL ALREADY EXISTS IN DB - this is needed when there is a UNIQUE value that must be created
-    //modelName and find one {object pair}
-        //Within object is {key: val} or {key: req.body.val}
-
-    //then dataName => 
-
-        //IF dataName exists
-
-            //create const for error message naming missing field from body
-            //log the error to console with arg errMessage
-            //return response status 400 and send errMessage
-        }
-        
-        //ELSE when dataName does not already exist continue with creation
-
-            //CREATE NEW DB OBJECT
-            //modelName create {object} that contains the key req body pair values
-                //Within object {key1: req.body.val1, ley2: req.body.val2}
-                //If key/val has sub-key/val they do not need to be specified here it would be specified 
-                //in the POST request sent from postman
-
-            
-            //then dataName => respond status 201 and json dataName send through cleanUp
-            //where data name (ex. student or post or data) is the object being returned
-
-        //END flow for unique check
-            
-        //ERROR CATCHER
-        //catch err =>
-            //log error err to console
-            //respond status 500 with json message stating error ocurred
-
-
-//PUT
-            
-//call router or app put from '/:id' with args request response =>
-                
-    //IF NOT request params id AND request body id AND request params id strict equal request body id 
-        
-        //create const for error message stating request params id AND request body id must match
-        
-        //log the error to console with arg errMessage
-        
-        //return response status 400 and send errMessage
- 
-    //create const of empty object for fields to update
-    
-    //create const array of fields that are allowed to be updated
-
-    //for each canUpdate with arg dataArg =>
-
-        //if dataArg is in request body
-
-            //assign the request body[dataArg] to toUpdate[dataArg] object
-
-
-    //DETERMINE IF KEY VAL ALREADY EXISTS IN DB - this is needed when there is a UNIQUE value that can be updated
-    //call modelName and find one {object pair}
-        //Within object is {key: val} or {key: req.body.val}
-
-    //then dataName => 
-        
-        //IF dataName exists
-            
-            //create const for error message naming missing field from body
-            //log the error to console with arg errMessage
-            //return response status 400 and send errMessage
-                    
-        //ELSE when dataName does not already exist continue with update
-    
-            //modelName call findByAndUpdate with args request params id and object with $set/val pair where val is toUpdate
-            
-            //then dataName => respond with status 204, json message naming request body id has been updated, and end with no args
-            //where data name (ex. student or post or data) is the object being returned
-            
-
-        //END flow for unique check
-
-
-
-        //ERROR CATCHER
-        //catch err =>
-    
-            //log error err to console
-
-            //respond status 500 with json message stating error ocurred
-
-    //DELETE
-    
-//call router or app delete from '/:id' with args request response =>
-
-    //DELETE MULTIPLE SHARED VALUES IN DB FROM SECOND Collection - this is needed when there is a UNIQUE Primary Collection value being deleted in a one to many 
-    //set the request ID to a parameter
-
-    //Call secondary Model and deleteMany based on shared {key/val pair}
-    
-    //then dataName => respond status 204
-
-    //END flow for unique check
-
-    //modelName findByIdAndRemove with arg request params id
-    //then dataName => respond with  status 204, json message naming request params id has been removed, and end with no args
-    //where data name (ex. student or post or data) is the object being returned
-
-    
-    //ERROR CATCHER
-    //catch err =>
-
-        //log error err to console
-
-        //respond status 500 with json message stating error ocurred
-~~~
-
-[Top](#top)
-## Setup SECONDARY routeFile.js OR CRUD requests within server.js
-<x id='secondroute'></x>
-
-~~~ js
-//Use strict
-"use strict";
-
-**Only needed if using Express Routing**
-//Create a constant to require express
-
-//Create a constant of router equal express router with no args
-
-//create const of Primary {modelName}  OR {modelName1, modelName2} to require models file
-
-
-//At bottom of file
-//module exports the const router
-
-**End Express Routing specific**
-
-
-
-**Needed for all CRUD**
-**If part of server.js use 'app.' instead of 'router.' and '/endPointName' and '/endPointName/:id' instead of '/' and '/:id'**
-
-//GET - ALL
-
-//call router or app get from '/' with args request response =>
-    //modelName find with no args
-    //then with arg <DB collectionName> =>
-        //respond with json object key/val pair, key is <DB collectionName> and val is <DB collectionName> map
-            
-            //New map (arrayName) => (arrayName) through cleanUp method with no args 
-
-    //ERROR CATCHER
-    //catch err =>
-        //log error err to console
-        //respond status 500 and json object message stating error ocurred
-
-//GET by ID
-
-//call router or app get from '/:id' with args request response =>
-    //modelName findById with args request params id
-    
-    //then dataName => respond json non-object with arg of dataName cleanUp method
-    //where data name (ex. student or post or data) is the object being returned
-
-
-    //ERROR CATCHER
-    //catch err =>
-        //log error err to console
-        //respond status 500 with json message stating error ocurred
-
-
-
-
-//POST
-
-//call router or app post from '/' with args request response =>
-    //create const array that specifies required fields
-        //If required field has sub-fields they do not need to be specified here it would be specified 
-        //in the POST request sent from postman
-
-    //loop through requiredFields
-    
-        //create const field and assign requiredField position i during loop
-
-        //IF field is not in the request body
-            //create const for error message naming missing field from body
-            //log the error to console with arg errMessage
-            //return response status 400 and send errMessage
- }
-
-    //Verify unique post value exists in Primary Collection
-    //primaryModel find by id with args {req.body.key} and (callback) function with args err and <<callbackVarName>>
-
-        //set value of {req.body.key} = <<callbackVarName>>
-
-    //then dataName => 
-         
-            //IF not dataName 
-            //create const for error message naming missing field from body
-            //log the error to console with arg errMessage
-            //return response status 400 and send errMessage
-}
-
-        //ELSE when dataName does not already exist continue with creation
-
-        //CREATE NEW DB OBJECT
-        //modelName create {object} that contains the key req body pair values
-
-            //Within object {key1: req.body.val1, ley2: req.body.val2}
-            //If key/val has sub-key/val they do not need to be specified here it would be specified 
-            //in the POST request sent from postman
-
-
-        //then dataName =>
-
-            //then dataName => respond status 201 and json dataName send through cleanUp
-            //where data name (ex. student or post or data) is the object being returned
-
-                
-        //ERROR CATCHER
-        //catch err =>
-                    //log error err to console
-                    //respond status 500 with json message stating error ocurred
-
-
-    //END flow for unique check
-
-            //ERROR CATCHER
-        //catch err =>
-            //log error err to console
-            //respond status 500 with json message stating error ocurred
-
-
-
-//PUT
-
-//call router or app put from '/:id' with args request response =>
-                
-    //IF NOT request params id AND request body id AND request params id strict equal request body id 
-        
-        //create const for error message stating request params id AND request body id must match
-        
-        //log the error to console with arg errMessage
-        
-        //return response status 400 and send errMessage
-
-    
-    //create const of empty object for fields to update
-    
-    //create const array of fields that are allowed to be updated
-
-    //for each canUpdate with arg dataArg =>
-
-        //if dataArg is in request body
-
-            //assign the request body[dataArg] to toUpdate[dataArg] object
-
-        //modelName call findByAndUpdate with args request params id and object with $set/val pair where val is toUpdate
-        
-        //then dataName => respond with status 204, json message naming request body id has been updated, and end with no args
-        //where data name (ex. student or post or data) is the object being returned
-
-
-        //ERROR CATCHER
-        //catch err =>
-    
-            //log error err to console
-
-            //respond status 500 with json message stating error ocurred
-
-    
-    //DELETE
-    
-//call router or app delete from '/:id' with args request response =>
-
-    //modelName findByIdAndRemove with arg request params id
-
-    //then dataName => respond with  status 204, json message naming request params id has been removed, and end with no args
-    //where data name (ex. student or post or data) is the object being returned
-
-    
-    //ERROR CATCHER
-    //catch err =>
-
-        //log error err to console
-
-        //respond status 500 with json message stating error ocurred
 
 ~~~
 

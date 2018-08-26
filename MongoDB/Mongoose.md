@@ -581,7 +581,11 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 ~~~ js
 
 //Use strict
-"use strict";
+'use strict';
+
+//if using .env fila
+require('dotenv').config();
+
 
 //Create a constant to require express
 
@@ -589,17 +593,17 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 
 //Create a constant to require morgan for logging
 
-//mongoose Promise to use global ES6 Promises
+//mongoose Promise equals global ES6 Promises
 
 //Create const of PORT, DATABASE_URL to require config.js
 
-//Create const of {model} to require models.js.  {model} = model name defined in models.js
+//Create const of modelName or {modelName} to require models.js - use {} if there are multiple models
 
-//Create constant that creates a new app instance by calling top level express function
+//Create constant that creates a new app instance by calling top level express with no args
 
-//tell app to use express.json
+//tell app to use with arg express.json with no arg
 
-//tell app to use morgan for common logging
+//tell app to use morgan with arg 'common' logging
 
 **If using Express Routing by putting CRUD code in separate JS file**
 
@@ -623,9 +627,9 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 
 //function named startServer takes args databaseUrl and port = PORT
 
-//return a new promise with args resolve and reject =>
+//return a new Promise( with args (resolve and reject) =>
 
-    //tell mongoose to connect with args databaseUrl and err =>
+    //tell mongoose to connect with open args (databaseUrl and err =>
 
         //if err return reject err
 
@@ -633,12 +637,12 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 
             //log to console the app is listening to port ${port}
 
-            //resolve for outstanding promise
+                //resolve with no args for outstanding promise
 
 
-        //chain on args `error` and err =>
+        //chain on with args `error` and err =>
 
-        //mongoose disconnect
+        //mongoose disconnect with no args
 
         //reject with arg err for outstanding promise
 
@@ -647,27 +651,27 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 
 //function named stopServer has no args
 
-    //return mongoose disconnect with no args then with no args =>
+    //return mongoose disconnect with no args then( with no args() =>
 
-    //return a new promise with args resolve and reject =>
+    //return a new promise with args (resolve and reject) =>
 
     //log to console the server is being stopped
 
-    //tell server to close with arg err =>
+    //tell server to close( with arg err =>
 
         //if err return reject with err for outstanding promise
 
-        //resolve for outstanding promise
+        //resolve with no args for outstanding promise
 
 
 
 //Code to allow server to be called directly or via tests
 //if require main is strictly equal to module
 
-//runServer with arg DATABASE_URL, catch with arg err => error to console with arg err to console not a message 
+//startServer with arg DATABASE_URL, catch with arg err => error to console with arg err to console not a message 
 
 
-//export the modules created app, runServer and closeServer
+//module exports created {app, startServer, stopServer}
 
 ~~~
 
@@ -678,7 +682,7 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 ~~~ js
 
 //Use strict
-"use strict";
+'use strict';
 
 //exports DATABASE_URL equals process env DATABASE_URL || "mongodb://databaseURL/dbName...";
     //For dev environment may need to swap positions - 'mongodb://databaseURL/dbName...' || process env DATABASE_URL
@@ -697,7 +701,7 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 ~~~ js
 
 //Use strict
-"use strict";
+'use strict';
 
 //Create a constant to require mongoose
 
@@ -729,7 +733,7 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 ~~~ js
 
 //Use strict
-"use strict";
+'use strict';
 
 //Create a constant to require mongoose
 
@@ -1082,14 +1086,14 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 
 ~~~ js
 //Use strict
-"use strict";
+'use strict';
 
 **Only needed if using Express Routing**
 //Create a constant to require express
 
-//Create a constant of router equal express router with no args
+//Create a constant of router equal express Router with no args
 
-//Create const of {model} to require models.js
+//Create const of modelName or {modelName} to require models.js - use {} if there are multiple models
 
 
 //At bottom of file
@@ -1205,10 +1209,14 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
             //assign the request body[dataArg] to toUpdate[dataArg] object
 
 
-        //modelName call findByAndUpdate with args request params id and object with $set/val pair where val is makeUpdate
+        //modelName call findByAndUpdate with args request params id, {object} with $set/val pair where val is toUpdate, {object} of new: true, and function w/ no args
+            //respond with json message non-object 
+                //ex -> res.json(`${req.body.id} has been updated`)
+            
+            //OR
 
-        //then dataName => respond with status 204, json message naming request body id has been updated, and end with no args
-            //where data name (ex. student or post or data) is the object being returned
+            //respond with json object message
+                //ex -> res.json({ "code": "200", "reason": "SUCCESS", "location": "", "message": `User record has been updated` })
 
 
 //ERROR CATCHER
@@ -1223,10 +1231,14 @@ mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:29621/<dbName>
 
 //call router or app delete from '/:id' with args request response =>
 
-    //modelName findByIdAndRemove with arg request params id
+    //modelName call findByIdAndRemove with args request params id, {object} with $set/val pair where val is toUpdate, and function w/ no args
+        //respond with json message non-object 
+            //ex -> res.json(`${req.body.id} has been updated`)
+        
+        //OR
 
-    //then dataName => respond with status 204, json message naming request params id has been removed, and end with no args
-        //where data name (ex. student or post or data) is the object being returned
+        //respond with json object message
+            //ex -> res.json({ "code": "200", "reason": "SUCCESS", "location": "", "message": `User record has been updated` })
 
 
 //ERROR CATCHER
